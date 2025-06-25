@@ -1,4 +1,5 @@
-<div class="widget-container 
+<div [id]="`widget-id-${widget.id}`"
+    class="widget-container 
             {{widget.type}}-type 
             col-{{widget.width * 2}}
             height-{{widget.height}}

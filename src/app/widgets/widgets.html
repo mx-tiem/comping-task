@@ -6,14 +6,14 @@
   <div class="col-10 offset-1 mt-5 drag-boundary">
     @for (gridRow of gridRows(); track $index) {
       <div class="row">
-        @for (gridBox of grid[gridRow]; track $index) {
-          <div class="col-2 grid-box {{!!gridBox ? 'reserved-box' : 'empty-box'}}"></div>
+        @for (gridCell of grid[gridRow]; track $index) {
+          <div [id]="gridCell.gridCellId" class="col-2 grid-box {{!!gridCell.widgetId ? 'reserved-box' : 'empty-box'}}"></div>
         }
       </div>
     }
 
     @for (widget of allWidgets; track $index) {
-      <app-widget [widget]="widget"></app-widget>
+      <app-widget [widget]="widget" (widgetMoved)="widgetMoved($event)"></app-widget>
     }
   </div>
 </div>

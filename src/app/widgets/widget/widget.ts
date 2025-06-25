@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 
 
@@ -20,8 +20,15 @@ export interface WidgetInterface {
 })
 export class Widget {
   @Input() widget!: WidgetInterface;
+  @Output() widgetMoved = new EventEmitter<any>();
 
-  onDragEnded($event: any) {
-    
+  onDragEnded(event: any) {
+    const handleDomData = event.source.element.nativeElement.querySelector('.widget-handle').getBoundingClientRect()
+    const x = (handleDomData.left+handleDomData.right)/2
+    const y = (handleDomData.top+handleDomData.bottom)/2
+    this.widgetMoved.emit({dropPoint: {x: x, y: y}, widget: this.widget, event: event})
+    event.source._dragRef.reset();
   }
+
+  
 }
