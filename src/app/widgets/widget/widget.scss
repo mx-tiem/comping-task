@@ -1,0 +1,67 @@
+.widget-container {
+  height: 100px;
+  position: absolute;
+}
+
+.height-1 {
+  height: 20vh;
+}
+.height-2 {
+  height: 40vh;
+}
+.height-3 {
+  height: 60vh;
+}
+.height-4 {
+  height: 80vh;
+}
+.top-1 {
+  top: 0%;
+}
+.top-2 {
+  top: 25%;
+}
+.top-3 {
+  top: 50%;
+}
+.top-4 {
+  top: 75%;
+}
+.left-1 {
+  left: 0%;
+}
+.left-2 {
+  left: 16.66%;
+}
+.left-3 {
+  left: 33.33%;
+}
+.left-4 {
+  left: 50%;
+}
+.left-5 {
+  left: 66.66%;
+}
+.left-6 {
+  left: 83.33%;
+}
+
+.widget-handle {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  cursor: move;
+  width: 24px;
+  height: 24px;
+  color: darkgray;
+}
+
+.map-type {
+  background-color: red;
+}
+.chart-type {
+  background-color: blue;
+}
+.list-type {
+  background-color: green;
+}

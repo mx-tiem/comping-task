@@ -1,1 +1,20 @@
-<p>widgets works!</p>
+<div class="row text-center">
+  <h1>controls</h1>
+</div>
+<div class="container-fluid">
+<div class="row">
+  <div class="col-10 offset-1 mt-5 drag-boundary">
+    @for (gridRow of gridRows(); track $index) {
+      <div class="row">
+        @for (gridBox of grid[gridRow]; track $index) {
+          <div class="col-2 grid-box {{!!gridBox ? 'reserved-box' : 'empty-box'}}"></div>
+        }
+      </div>
+    }
+
+    @for (widget of allWidgets; track $index) {
+      <app-widget [widget]="widget"></app-widget>
+    }
+  </div>
+</div>
+</div>
