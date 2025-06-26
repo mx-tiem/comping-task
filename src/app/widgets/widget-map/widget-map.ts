@@ -74,6 +74,7 @@ export class WidgetMap implements OnDestroy{
             name: '', latLng: [markerControls.lat, markerControls.lng], description: ''
           }
         })
+        this.updateLocationMarkers()
       })
   }
 
