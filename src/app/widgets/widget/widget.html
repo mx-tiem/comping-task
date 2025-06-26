@@ -17,5 +17,7 @@
     </div>
     @if (widget.type === 'chart') {
       <app-chart [widget]="widget"></app-chart>
-    }
+    } @else if (widget.type === 'map') {
+      <app-widget-map [widget]="widget"></app-widget-map>
+    } @else if (widget.type === 'list') {}
 </div>

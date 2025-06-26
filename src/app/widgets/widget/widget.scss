@@ -55,11 +55,8 @@
   cursor: move;
   width: 24px;
   height: 24px;
-  color: darkgray;
-}
-
-.map-type {
-  background-color: red;
+  color: rgb(86, 86, 86);
+  z-index: 9999999;
 }
 .list-type {
   background-color: green;

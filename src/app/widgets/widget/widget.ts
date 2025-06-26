@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { Chart } from '../chart/chart';
+import { WidgetMap } from '../widget-map/widget-map';
 
 
 export interface WidgetInterface {
@@ -11,11 +12,12 @@ export interface WidgetInterface {
   anchorX: number;
   anchorY: number;
   chartType?: 'line' | 'bar' | 'radar' | 'pie' | 'polarArea' | 'doughnut';
+  mapName?: string;
 }
 
 @Component({
   selector: 'app-widget',
-  imports: [Chart, CdkDrag, CdkDragHandle],
+  imports: [Chart, WidgetMap, CdkDrag, CdkDragHandle],
   templateUrl: './widget.html',
   styleUrl: './widget.scss'
 })

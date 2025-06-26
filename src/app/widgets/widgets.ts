@@ -52,7 +52,7 @@ export class Widgets implements AfterViewInit{
     // { id: 1, width: 1, height: 1, anchorX: 1, anchorY: 1, type: 'list' },
     { id: 2, width: 2, height: 1, anchorX: 3, anchorY: 1, type: 'chart', chartType: 'line' },
     { id: 3, width: 2, height: 2, anchorX: 5, anchorY: 3,  type: 'chart', chartType: 'bar' },
-    // { id: 4, width: 4, height: 2, anchorX: 1, anchorY: 3, type: 'map' }
+    { id: 4, width: 4, height: 2, anchorX: 1, anchorY: 3, type: 'map', mapName: 'initial'}
   ]
 
   constructor() {
