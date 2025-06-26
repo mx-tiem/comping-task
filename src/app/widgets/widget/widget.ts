@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { Chart } from '../chart/chart';
 import { WidgetMap } from '../widget-map/widget-map';
+import { LocationsList } from '../locations-list/locations-list';
 
 
 export interface WidgetInterface {
@@ -13,17 +14,19 @@ export interface WidgetInterface {
   anchorY: number;
   chartType?: 'line' | 'bar' | 'radar' | 'pie' | 'polarArea' | 'doughnut';
   mapName?: string;
+  controls?: string;
 }
 
 @Component({
   selector: 'app-widget',
-  imports: [Chart, WidgetMap, CdkDrag, CdkDragHandle],
+  imports: [Chart, WidgetMap, LocationsList, CdkDrag, CdkDragHandle],
   templateUrl: './widget.html',
   styleUrl: './widget.scss'
 })
 export class Widget {
   @Input() widget!: WidgetInterface;
   @Output() widgetMoved = new EventEmitter<any>();
+  scrolling = false
 
   onDragEnded(event: any) {
     const handleDomData = event.source.element.nativeElement.querySelector('.widget-handle').getBoundingClientRect()
@@ -33,5 +36,7 @@ export class Widget {
     event.source._dragRef.reset();
   }
 
-  
+  onScroll(event: any) {
+    this.scrolling = event.target.scrollTop > 0
+  }
 }

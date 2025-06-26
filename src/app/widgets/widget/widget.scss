@@ -5,6 +5,26 @@
   border: 1px solid black;
 }
 
+.widget-handle {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  cursor: move;
+  width: 24px;
+  height: 24px;
+  color: rgb(86, 86, 86);
+  z-index: 9999999;
+}
+
+.sticky-handle {
+  position: sticky;
+}
+
+.scrollable-widget {
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
 .height-1 {
   height: 20vh;
 }
@@ -46,18 +66,4 @@
 }
 .left-6 {
   left: 83.33%;
-}
-
-.widget-handle {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  cursor: move;
-  width: 24px;
-  height: 24px;
-  color: rgb(86, 86, 86);
-  z-index: 9999999;
-}
-.list-type {
-  background-color: green;
 }
