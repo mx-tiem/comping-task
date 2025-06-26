@@ -1,6 +1,8 @@
 .widget-container {
   height: 100px;
   position: absolute;
+  background-color: white;
+  border: 1px solid black;
 }
 
 .height-1 {
@@ -58,9 +60,6 @@
 
 .map-type {
   background-color: red;
-}
-.chart-type {
-  background-color: blue;
 }
 .list-type {
   background-color: green;
