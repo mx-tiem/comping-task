@@ -2,7 +2,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { Chart } from '../chart/chart';
 import { WidgetMap } from '../widget-map/widget-map';
-import { LocationsList } from '../locations-list/locations-list';
+import { LoactionInterface, LocationsList } from '../locations-list/locations-list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 
 export interface WidgetInterface {
@@ -15,17 +17,19 @@ export interface WidgetInterface {
   chartType?: 'line' | 'bar' | 'radar' | 'pie' | 'polarArea' | 'doughnut';
   mapName?: string;
   controls?: string;
+  locations?: LoactionInterface[]
 }
 
 @Component({
   selector: 'app-widget',
-  imports: [Chart, WidgetMap, LocationsList, CdkDrag, CdkDragHandle],
+  imports: [Chart, WidgetMap, LocationsList, CdkDrag, CdkDragHandle, MatIconModule, MatButtonModule],
   templateUrl: './widget.html',
   styleUrl: './widget.scss'
 })
 export class Widget {
   @Input() widget!: WidgetInterface;
   @Output() widgetMoved = new EventEmitter<any>();
+  @Output() widgetDeleted = new EventEmitter<WidgetInterface>();
   scrolling = false
 
   onDragEnded(event: any) {
@@ -38,5 +42,9 @@ export class Widget {
 
   onScroll(event: any) {
     this.scrolling = event.target.scrollTop > 0
+  }
+
+  deleteWidget() {
+    this.widgetDeleted.emit(this.widget)
   }
 }

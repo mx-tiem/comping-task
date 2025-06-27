@@ -13,7 +13,17 @@
   width: 24px;
   height: 24px;
   color: rgb(86, 86, 86);
-  z-index: 9999999;
+  z-index: 999;
+}
+.widget-delete {
+  position: absolute;
+  bottom: 25px;
+  left: 10px;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  color: rgb(86, 86, 86);
+  z-index: 999;
 }
 
 .sticky-handle {

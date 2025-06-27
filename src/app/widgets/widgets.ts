@@ -1,5 +1,14 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { Widget, WidgetInterface } from './widget/widget';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
+import { WidgetDialog } from './widget-dialog/widget-dialog';
+import { Subscription } from 'rxjs';
+import { WidgetsService } from './widgets-service';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { LoactionInterface } from './locations-list/locations-list';
 
 interface GridInterface {
   [key: string]: GridCellInterface[];
@@ -31,13 +40,37 @@ const initialGridCell: GridCellInterface = {
   y2: 0
 }
 
+const exmapleLocations1: LoactionInterface[] = [
+    { name: 'Heinzelova 70', latLng: {lat: 45.804686354098635, lng: 16.00787966861684}, description: 'Comping HQ'},
+    { name: 'Trg bana Josipa Jelačića', latLng: {lat: 45.81324918928916, lng: 15.97735111094576}, description: 'The central city square and vibrant heart of Zagreb, where historic architecture meets modern city life.'},
+    { name: 'HNK', latLng: {lat: 45.80975723831787, lng: 15.969805063066701}, description: 'A grandiose neo-baroque theater showcasing Croatian opera, ballet, and drama in an opulent setting.'},
+    { name: 'Glavni Kolodvor', latLng: {lat: 45.80473828332682, lng: 15.978769282109697}, description: 'Zagreb’s main railway station, an elegant 19th-century building that serves as a gateway to domestic and international train travel.'},
+    { name: 'Autobusni Kolodvor', latLng: {lat: 45.804391097545974, lng: 15.993206609095234}, description: 'The city’s central bus terminal, a functional hub connecting Zagreb to regional and European destinations.'},
+    { name: 'Jarun', latLng: {lat: 45.780687368857066, lng: 15.91743673689596}, description: 'A scenic lake and recreational area popular for kayaking, cycling, and Zagreb’s lively summer nightlife scene.'},
+    { name: 'Bundek', latLng: {lat: 45.78539319986199, lng: 15.986879256856362}, description: 'A peaceful urban park and lake ideal for picnics, jogging, or relaxing by the water amidst landscaped greenery.'},
+    { name: 'Maksimir', latLng: {lat: 45.824543503132176, lng: 16.01754417423182}, description: 'Home to Zagreb’s largest park and zoo, a vast green space filled with walking trails, lakes, and forested areas.'},
+    { name: 'Cibona', latLng: {lat: 45.80319059939342, lng: 15.963846082109576}, description: 'A sports complex best known for the iconic Cibona Tower and the basketball club that has brought pride to the city.'},
+    { name: 'Arena', latLng: {lat: 45.77136219265469, lng: 15.943632797451126}, description: 'A massive modern multipurpose venue that hosts everything from concerts and sporting events to large international exhibitions.'},
+  ]
+
+const exmapleLocations2: LoactionInterface[] = [
+  { name: 'Zagreb #1', latLng: {lat: 45.815399, lng: 15.966568}, description: 'Zagreb location #1'},
+  { name: 'Zagreb #2', latLng: {lat: 45.812764, lng: 15.977111}, description: 'Zagreb location #2'},
+  { name: 'Zagreb #3', latLng: {lat: 45.821585, lng: 15.955215}, description: 'Zagreb location #3'},
+  { name: 'Zagreb #4', latLng: {lat: 45.807397, lng: 15.981849}, description: 'Zagreb location #4'},
+  { name: 'Zagreb #5', latLng: {lat: 45.826120, lng: 15.965410}, description: 'Zagreb location #5'},
+]
+
 @Component({
   selector: 'app-widgets',
-  imports: [ Widget ],
+  imports: [ Widget, MatIconModule, MatButtonModule, RouterLink ],
   templateUrl: './widgets.html',
-  styleUrl: './widgets.scss'
+  styleUrl: './widgets.scss',
 })
 export class Widgets implements AfterViewInit{
+  newWidgetSub = new Subscription()
+  private _snackBar = inject(MatSnackBar);
+
   grid: GridInterface = {
     row1: [initialGridCell, initialGridCell, initialGridCell, initialGridCell, initialGridCell, initialGridCell],
     row2: [initialGridCell, initialGridCell, initialGridCell, initialGridCell, initialGridCell, initialGridCell],
@@ -49,21 +82,89 @@ export class Widgets implements AfterViewInit{
   nextCellId = 0;
 
   allWidgets: WidgetInterface[] = [
-    { id: 1, width: 3, height: 2, anchorX: 1, anchorY: 1, type: 'list', controls: 'all' },
-    // { id: 2, width: 2, height: 1, anchorX: 5, anchorY: 1, type: 'chart', chartType: 'pie' },
-    // { id: 3, width: 2, height: 2, anchorX: 5, anchorY: 3,  type: 'chart', chartType: 'radar' },
-    { id: 4, width: 4, height: 2, anchorX: 1, anchorY: 3, type: 'map', mapName: 'initial'},
-    { id: 5, width: 2, height: 2, anchorX: 5, anchorY: 3, type: 'map', mapName: 'smol'},
-    { id: 6, width: 2, height: 2, anchorX: 5, anchorY: 1, type: 'list', controls: 'smol' },
+    { id: 1, width: 2, height: 2, anchorX: 1, anchorY: 1, type: 'chart', chartType: 'pie' },
+    { id: 2, width: 2, height: 2, anchorX: 5, anchorY: 1,  type: 'chart', chartType: 'radar' },
+    { id: 3, width: 2, height: 2, anchorX: 3, anchorY: 1,  type: 'map', mapName: 'Up map' },
+    { id: 4, width: 2, height: 2, anchorX: 3, anchorY: 3,  type: 'map', mapName: 'Down map' },
+    { id: 5, width: 2, height: 2, anchorX: 1, anchorY: 3,  type: 'list', controls: 'all', locations: exmapleLocations1 },
+    { id: 6, width: 2, height: 2, anchorX: 5, anchorY: 3,  type: 'list', controls: 'Up map', locations: exmapleLocations2 },
   ]
 
-  constructor() {
-    this.setGridCellIdsAndCoordinates()
+  constructor(private dialog: MatDialog, private widgetService: WidgetsService) {
     this.checkFilledRows()
+    this.setGridCellIdsAndCoordinates()
+    this.subscribeToNewWidget()
   }
 
   ngAfterViewInit(): void {
     this.setGridCellXandYs()
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(WidgetDialog, {
+      width: '50vw',
+      maxWidth: '80vw',
+      height: '75vh',
+      data: {mapNames: this.allWidgets
+                          .filter(widget => widget.type == 'map')
+                          .map(widget => widget.mapName)}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('dialog closed')
+    });
+  }
+
+  subscribeToNewWidget() {
+    this.newWidgetSub = this.widgetService.newWidgetObs.subscribe(
+      newWidget => {
+        if (!!newWidget.type) {
+          const newAnchor: {x: number, y: number}  | false = this.getNewAnchor(newWidget)
+          if (newAnchor) {
+            newWidget.anchorX = newAnchor.x
+            newWidget.anchorY = newAnchor.y
+            newWidget.id = this.getNewId()
+            this.allWidgets.push(newWidget)
+          } else {
+            this.openSnackBar(`Sorry, can't find place for that widget.`, `Ok`)
+          }
+        }
+      }
+    )
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+    });
+  }
+
+  getNewAnchor(newWidget: any) {
+    var returnValue: any = false
+    this.gridRows().forEach((row: string) => {
+      this.grid[row].forEach(gridCell => {
+        if (!gridCell.widgetId &&
+            this.canSnapToGrid(newWidget, undefined, gridCell) &&
+            !this.checkIfWidgetOutbound(newWidget, gridCell) &&
+            !returnValue) {
+          returnValue = {x: gridCell.coordinates.x, y: gridCell.coordinates.y}
+        }
+      })
+    })
+    return returnValue
+  }
+
+  checkIfWidgetOutbound(newWidget: WidgetInterface, gridCell: GridCellInterface) {
+    const lastX = newWidget.width + gridCell.coordinates.x - 1
+    const lastY = newWidget.height + gridCell.coordinates.y - 1
+
+    return lastX > 6 || lastY > 4
+  }
+
+  removeWidget(widget: WidgetInterface) {
+    this.allWidgets.splice(this.allWidgets.indexOf(widget), 1)
+    this.checkFilledRows()
   }
 
   setGridCellIdsAndCoordinates() {
@@ -115,7 +216,7 @@ export class Widgets implements AfterViewInit{
   }
 
   widgetMoved({ dropPoint, widget, event }: { dropPoint: {x: number, y: number}, widget: WidgetInterface, event: any }) {
-    if (this.canSnapToGrid(dropPoint, widget)) {
+    if (this.canSnapToGrid(widget, dropPoint, undefined)) {
       this.snapWidgetToGrid(dropPoint, widget)
     } else {
       event.source._dragRef.reset()
@@ -123,7 +224,7 @@ export class Widgets implements AfterViewInit{
     this.checkFilledRows()
   }
 
-  canSnapToGrid(dropPoint: { x: number, y: number }, widget: WidgetInterface): boolean {
+  canSnapToGrid(widget: WidgetInterface, dropPoint?: { x: number, y: number }, dropCell?: GridCellInterface): boolean {
     let occupiedCells: any[] = []
     let canSnap = true
     this.allWidgets.filter(filterWidget => {return filterWidget.id != widget.id} )
@@ -132,7 +233,7 @@ export class Widgets implements AfterViewInit{
           })
     occupiedCells = occupiedCells.flat()
     
-    let newAnchor = this.findCellIdByDropPoint(dropPoint)
+    let newAnchor = !!dropPoint ? this.findCellIdByDropPoint(dropPoint) : dropCell
     let newWidget = {...widget} 
     newWidget.anchorX = newAnchor!.coordinates.x
     newWidget.anchorY = newAnchor!.coordinates.y
@@ -195,5 +296,9 @@ export class Widgets implements AfterViewInit{
     }
 
     return 'null'
+  }
+
+  getNewId() {
+    return Math.max(0, ...this.allWidgets.map(widget => widget.id)) + 1
   }
 }

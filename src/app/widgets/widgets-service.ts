@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { WidgetInterface } from './widget/widget';
+import { LoactionInterface } from './locations-list/locations-list';
 
 interface LatLngControlInterface {lat: number, lng: number, control: string}
 interface MarkerControlInterface {lat: number, lng: number, control: string}
@@ -27,18 +28,21 @@ export class WidgetsService {
   private allMarkers = new BehaviorSubject<MarkerControlInterface[]>(initialMarkerControl);
   currentMarkers = this.allMarkers.asObservable();
 
+  private newWidget = new BehaviorSubject<any>({});
+  newWidgetObs = this.newWidget.asObservable()
+
   constructor() {}
 
   updateCenterLatLng(lat: number, lng: number, control: string) {
     this.centerLatLng.next({lat: lat, lng: lng, control: control});
   }
 
-  updateMarkers(locations: {name: string, latLng: [number, number], description: string}[], widget: WidgetInterface) {
+  updateMarkers(locations: LoactionInterface[], widget: WidgetInterface) {
     let newMakersList: {lat: number, lng: number, control: string}[] = []
     locations.forEach(location => {
       const newMarker = {
-        lat: location.latLng[0],
-        lng: location.latLng[1],
+        lat: location.latLng.lat,
+        lng: location.latLng.lng,
         control: widget.controls!
       }
       if (!this.currentMarkersInclude(newMarker)) {
@@ -59,5 +63,9 @@ export class WidgetsService {
       ) returnValue = true
     })
     return returnValue
+  }
+
+  submitNewWidget(newWidget: any) {
+    this.newWidget.next(newWidget)
   }
 }

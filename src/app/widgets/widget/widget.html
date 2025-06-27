@@ -24,4 +24,10 @@
     } @else if (widget.type === 'list') {
       <app-locations-list [widget]="widget"></app-locations-list>
     }
+
+    <div class="widget-delete {{ scrolling ?  'sticky-handle' : ''}}">
+      <button matIconButton (click)="deleteWidget()">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
 </div>

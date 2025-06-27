@@ -4,7 +4,7 @@ import * as L from 'leaflet';
 import { WidgetInterface } from '../widget/widget';
 import { control, latLng, Map, marker, tileLayer } from 'leaflet';
 import { iconPNG } from '../../app';
-import { defaultLocations } from '../locations-list/locations-list';
+import { defaultLocations, LoactionInterface } from '../locations-list/locations-list';
 import { initialCenterLatLng, WidgetsService } from '../widgets-service';
 import { Subscription } from 'rxjs';
 
@@ -22,10 +22,10 @@ export class WidgetMap implements OnDestroy{
 
   map: L.Map | null = null
 
-  locations: {name: string, latLng: [number, number], description: string}[] = defaultLocations
+  locations: LoactionInterface[] = defaultLocations
 
   locationMarkers = this.locations.map(location => {
-          return marker(location.latLng, { icon: iconPNG() })
+          return marker([location.latLng.lat, location.latLng.lng], { icon: iconPNG() })
         })
 
   mapLayers = [
@@ -41,6 +41,7 @@ export class WidgetMap implements OnDestroy{
   };
 
   constructor(private widgetService: WidgetsService) {}
+  
 
   ngOnDestroy(): void {
     this.centerLatLngSub.unsubscribe()
@@ -71,7 +72,7 @@ export class WidgetMap implements OnDestroy{
         })
         this.locations = concernedControls.map(markerControls => {
           return {
-            name: '', latLng: [markerControls.lat, markerControls.lng], description: ''
+            name: '', latLng: {lat: markerControls.lat, lng: markerControls.lng}, description: ''
           }
         })
         this.updateLocationMarkers()
