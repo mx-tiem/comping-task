@@ -7,7 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { WidgetDialog } from './widget-dialog/widget-dialog';
 import { Subscription } from 'rxjs';
 import { WidgetsService } from './widgets-service';
-import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { LoactionInterface } from './locations-list/locations-list';
 
 interface GridInterface {
