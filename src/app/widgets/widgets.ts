@@ -164,6 +164,7 @@ export class Widgets implements AfterViewInit{
 
   removeWidget(widget: WidgetInterface) {
     this.allWidgets.splice(this.allWidgets.indexOf(widget), 1)
+    if (widget.type == 'list') { this.widgetService.removeLocations(widget) }
     this.checkFilledRows()
   }
 

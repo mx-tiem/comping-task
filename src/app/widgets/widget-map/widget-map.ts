@@ -80,6 +80,7 @@ export class WidgetMap implements OnDestroy{
   }
 
   updateLocationMarkers() {
+    this.locationMarkers = []
     this.locationMarkers = this.locations.map(location => {
       return marker(location.latLng, { icon: iconPNG() })
     })
@@ -88,9 +89,9 @@ export class WidgetMap implements OnDestroy{
       tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18 }),
       ...this.locationMarkers
     ]
-
+    this.map?.eachLayer(layer => this.map?.removeLayer(layer))
     this.mapLayers.forEach(layer => {
-      if (!this.map?.hasLayer(layer)) this.map?.addLayer(layer)
+      this.map?.addLayer(layer)
     })
   }
 }

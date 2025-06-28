@@ -68,4 +68,21 @@ export class WidgetsService {
   submitNewWidget(newWidget: any) {
     this.newWidget.next(newWidget)
   }
+
+  removeLocations(widget: WidgetInterface) {
+    let localAllMarkers = this.allMarkers.value
+    const widgetLocationsLatLng = widget.locations?.map(location => {return location.latLng})
+    this.allMarkers.next(
+      localAllMarkers.filter(marker => {
+        let validMarker = true
+        widget.locations?.forEach(location => {
+          validMarker &&
+          location.name != `Heinzelova 70` &&
+          (validMarker = (marker.lat != location.latLng.lat && marker.lng != location.latLng.lng))
+        })
+
+        return validMarker
+      })
+    )
+  }
 }

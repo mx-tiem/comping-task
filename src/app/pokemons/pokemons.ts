@@ -30,7 +30,7 @@ export class Pokemons implements OnInit {
   dataSource = new MatTableDataSource<PokemonInterface>([]);
 
   pageSizeOptions = [5, 10, 25, 50, 100]
-  selectedPageSize = 10
+  selectedPageSize = 5
   pageIndex = 0
   totalLength = 0
 
@@ -83,6 +83,7 @@ export class Pokemons implements OnInit {
     if (this.selectedPageSize != event.pageSize) {
       this.selectedPageSize = event.pageSize
       this.pageIndex = 0
+      this.paginator.pageIndex = 0
     } else if (this.pageIndex != event.pageIndex) {
       this.pageIndex = event.pageIndex
     }
