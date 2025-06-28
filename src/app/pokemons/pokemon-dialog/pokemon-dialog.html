@@ -1,1 +1,9 @@
 <div>Some tags before</div>
+<owl-carousel-o [options]="customOptions">
+  @for (image of pokemon.images; track $index) {
+    <ng-template carouselSlide>
+      <img [src]="image">
+    </ng-template>
+  }
+</owl-carousel-o>
+<div>Some tags after</div>

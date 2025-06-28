@@ -19,10 +19,6 @@ interface PokemonInterface {
   url: string,
 }
 
-interface PokeApiInterface {
-
-}
-
 @Component({
   selector: 'app-pokemons',
   imports: [MatButtonModule, MatIconModule, MatTableModule, MatPaginatorModule, RouterLink, HttpClientModule],
