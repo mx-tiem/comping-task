@@ -16,6 +16,10 @@ export class Chart implements OnInit{
   chartValues: Array<number> = [];
   chartData: Array<any> = [];
   chartLabels: Array<string> = [];
+  chartOptions: any = {
+    responsive: true,
+    maintainAspectRatio: false,
+  }
 
   ngOnInit(): void {
     this.parseData()

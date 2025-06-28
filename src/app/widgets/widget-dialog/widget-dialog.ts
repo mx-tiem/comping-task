@@ -102,7 +102,15 @@ export class WidgetDialog {
       name: this.locationForm.value.name!, 
       latLng: {lat: +this.locationForm.value.latitude!, lng: +this.locationForm.value.longitude!},
       description: this.locationForm.value.description!})
-    this.locationForm.reset()
+
+    this.resetLocationForm()
+  }
+
+  resetLocationForm(){
+    this.locationForm.controls.name.reset()
+    this.locationForm.controls.description.reset()
+    this.locationForm.controls.latitude.reset()
+    this.locationForm.controls.longitude.reset()
   }
 
   removeLocation(location: LoactionInterface) {
