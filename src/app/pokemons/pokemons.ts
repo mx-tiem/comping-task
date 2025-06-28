@@ -54,9 +54,7 @@ export class Pokemons implements OnInit {
         this.allPokemonsBasicData = responseData.results
         this.collectDetailData()
         this.totalLength = responseData.count
-      }, errorData => {
-        // implement snackbar
-      })
+      }, errorData => {})
   }
 
   collectDetailData() {
@@ -94,7 +92,7 @@ export class Pokemons implements OnInit {
     const dialogRef = this.dialog.open(PokemonDialog, {
       width: '50vw',
       maxWidth: '80vw',
-      height: '75vh',
+      height: '90vh',
       data: { pokemon: pokemon }
     });
 

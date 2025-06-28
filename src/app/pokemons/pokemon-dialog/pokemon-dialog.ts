@@ -12,6 +12,9 @@ interface PokemonFullDetailInterface {
   weight: number,
   type: string,
   images: string[],
+  stats: {[key: string]: number, effort: number}[],
+  moves: string[],
+  abilities: string[],
 }
 
 @Component({
@@ -49,8 +52,30 @@ export class PokemonDialog implements OnInit {
         weight: responseData.weight,
         type: responseData.types.map((type: any) => type.type).map((type: any) => this.upperCaseString(type.name)).join(', '),
         images: Object.values(responseData.sprites).filter(spriteValue => typeof spriteValue == 'string'),
+        abilities: responseData.abilities.map((ability: any) => ability.ability.name),
+        moves: responseData.moves.map((move: any) => move.move.name),
+        stats: this.parseStats(responseData.stats)
       }
     })
+  }
+
+  parseStats(pokemonStats: {base_stat: number, effort: number, stat: {name: string, url: string}}[]) {
+    let allStats: any[] = []
+    pokemonStats.forEach((stat) => {
+      allStats.push({
+        [`${stat.stat.name}`]: stat.base_stat,
+        effort: stat.effort
+      })
+    })
+    return allStats
+  }
+
+  getStatKey(stat: {[key: string]: number}){
+    return Object.keys(stat)[0]
+  }
+
+  getStatValue(stat: {[key: string]: number}){
+    return stat[this.getStatKey(stat)]
   }
 
   upperCaseString(someString: string) {
