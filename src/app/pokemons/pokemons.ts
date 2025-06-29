@@ -1,12 +1,13 @@
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { PokemonDialog } from './pokemon-dialog/pokemon-dialog';
+import { Location } from '@angular/common';
 
 
 interface PokemonInterface {
@@ -41,10 +42,35 @@ export class Pokemons implements OnInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private http: HttpClient){}
+  constructor(private http: HttpClient, private location: Location, private activatedRoute: ActivatedRoute){}
 
   ngOnInit(): void {
+    this.checkUrlParams()
     this.catchSomePokemons()
+  }
+
+  checkUrlParams() {
+    if (this.location.path().split('/').includes('show')) {
+      const pokemonId: number = +this.location.path().split('/').at(-1)!
+      const tempPokemon = {
+                id: pokemonId,
+                name: '',
+                height: 0,
+                weight: 0,
+                type: '',
+                image: '',
+                url: `https://pokeapi.co/api/v2/pokemon/${pokemonId}/`,
+      }
+      this.openDialog(tempPokemon)
+    } else {
+      const urlParams: any = this.activatedRoute.snapshot.queryParams
+      if (+urlParams.limit > 0) {
+        this.selectedPageSize = urlParams.limit
+        if (+urlParams.limit > 0) {
+          this.pageIndex = urlParams.offset / urlParams.limit
+        }
+      }
+    }
   }
 
   catchSomePokemons() {
@@ -90,6 +116,7 @@ export class Pokemons implements OnInit {
     this.catchSomePokemons()
   }
   openDialog(pokemon: PokemonInterface) {
+    this.location.go(`/pokemons/show/${pokemon.id}`)
     const dialogRef = this.dialog.open(PokemonDialog, {
       width: '50vw',
       maxWidth: '80vw',
@@ -98,15 +125,16 @@ export class Pokemons implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+      this.buildPokeApiRoute()
     });
   }
 
   buildPokeApiRoute() {
-    let pokemonUrl = `https://pokeapi.co/api/v2/pokemon?limit=${this.selectedPageSize}`
+    let pokemonApiUrl = `https://pokeapi.co/api/v2/pokemon?limit=${this.selectedPageSize}`
     const pageOffset = this.pageIndex * this.selectedPageSize
-    pageOffset > 0 ?  pokemonUrl += `&offset=${pageOffset}` : ''
-    return pokemonUrl
+    pageOffset > 0 ?  pokemonApiUrl += `&offset=${pageOffset}` : ''
+    this.location.go(`/pokemons?offset=${pageOffset}&limit=${this.selectedPageSize}`)
+    return pokemonApiUrl
   }
 
   upperCaseString(someString: string) {

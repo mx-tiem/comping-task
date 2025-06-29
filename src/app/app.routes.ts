@@ -9,6 +9,8 @@ export const routes: Routes = [
   { path: 'widgets', component: Widgets, children: [
     { path: 'new', component: Widgets },
   ]},
-  { path: 'pokemons', component: Pokemons },
+  { path: 'pokemons', component: Pokemons, children: [
+    { path: 'show/:id', component: Pokemons },
+  ]},
   { path: '**', redirectTo: 'select-task' },
 ];
