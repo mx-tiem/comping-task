@@ -6,7 +6,9 @@ import { Widgets } from './widgets/widgets';
 export const routes: Routes = [
   { path: '', redirectTo: 'select-task', pathMatch: 'full'},
   { path: 'select-task', component: SelectTask },
-  { path: 'widgets', component: Widgets },
+  { path: 'widgets', component: Widgets, children: [
+    { path: 'new', component: Widgets },
+  ]},
   { path: 'pokemons', component: Pokemons },
   { path: '**', redirectTo: 'select-task' },
 ];

@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { AfterViewInit, Component, inject, OnDestroy } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { Widget, WidgetInterface } from './widget/widget';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -67,7 +67,7 @@ const exmapleLocations2: LoactionInterface[] = [
   templateUrl: './widgets.html',
   styleUrl: './widgets.scss',
 })
-export class Widgets implements AfterViewInit{
+export class Widgets implements AfterViewInit, OnDestroy {
   newWidgetSub = new Subscription()
   private _snackBar = inject(MatSnackBar);
 
@@ -90,7 +90,7 @@ export class Widgets implements AfterViewInit{
     { id: 6, width: 2, height: 2, anchorX: 5, anchorY: 3,  type: 'list', controls: 'Up map', locations: exmapleLocations2 },
   ]
 
-  constructor(private dialog: MatDialog, private widgetService: WidgetsService) {
+  constructor(private dialog: MatDialog, private widgetService: WidgetsService, private router: Router) {
     this.checkFilledRows()
     this.setGridCellIdsAndCoordinates()
     this.subscribeToNewWidget()
@@ -98,9 +98,19 @@ export class Widgets implements AfterViewInit{
 
   ngAfterViewInit(): void {
     this.setGridCellXandYs()
+    this.routeUrl()
+  }
+
+  ngOnDestroy(): void {
+    this.newWidgetSub.unsubscribe()
+  }
+
+  routeUrl() {
+    if (this.router.url == `/widgets/new`) this.openDialog()
   }
 
   openDialog(): void {
+    this.router.navigate(['widgets', 'new']);
     const dialogRef = this.dialog.open(WidgetDialog, {
       width: '50vw',
       maxWidth: '80vw',
@@ -111,7 +121,7 @@ export class Widgets implements AfterViewInit{
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('dialog closed')
+      this.router.navigate(['widgets'])
     });
   }
 
