@@ -99,6 +99,18 @@
       } @else if (widgetType.value == 'list') {
         <form [formGroup]="locationForm">
           <div class="row mt-4">
+            <mat-form-field class="col-8 offset-2">
+              <mat-label>Controls widget map:</mat-label>
+              <mat-select formControlName="control">
+                <mat-option value="all">All</mat-option>
+                @for (map of data.mapNames; track $index) {
+                  <mat-option [value]="map">{{ map }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="row mt-4">
             <mat-form-field class="col-5 offset-1">
               <mat-label>Latitude</mat-label>
               <input matInput type="number" formControlName="latitude">
@@ -110,19 +122,9 @@
             </mat-form-field>
           </div>
           <div class="row">
-            <mat-form-field class="col-8">
+            <mat-form-field class="col-8 offset-2">
               <mat-label>Location name</mat-label>
               <input matInput type="text" formControlName="name">
-            </mat-form-field>
-
-            <mat-form-field class="col-4">
-              <mat-label>Controls</mat-label>
-              <mat-select formControlName="control">
-                <mat-option value="all">All</mat-option>
-                @for (map of data.mapNames; track $index) {
-                  <mat-option [value]="map">{{ map }}</mat-option>
-                }
-              </mat-select>
             </mat-form-field>
           </div>
           <div class="row">
