@@ -82,7 +82,7 @@ export class Widgets implements AfterViewInit, OnDestroy {
   nextCellId = 0;
 
   allWidgets: WidgetInterface[] = [
-    { id: 1, width: 2, height: 2, anchorX: 1, anchorY: 1, type: 'chart', chartType: 'pie' },
+    { id: 1, width: 2, height: 2, anchorX: 1, anchorY: 1, type: 'chart', chartType: 'polarArea' },
     { id: 2, width: 2, height: 2, anchorX: 5, anchorY: 1,  type: 'chart', chartType: 'radar' },
     { id: 3, width: 2, height: 2, anchorX: 3, anchorY: 1,  type: 'map', mapName: 'Up map' },
     { id: 4, width: 2, height: 2, anchorX: 3, anchorY: 3,  type: 'map', mapName: 'Down map' },
