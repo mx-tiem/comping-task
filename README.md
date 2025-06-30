@@ -20,6 +20,9 @@ ng serve
 Libraries used for this project:
 
 Angular Material (https://material.angular.dev/)
+
 Ng Bootstrap (https://ng-bootstrap.github.io/#/home)
+
 ng2-charts (https://krish512.github.io/ng4-charts/)
+
 ngx-owl-carousel-o (https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o)
